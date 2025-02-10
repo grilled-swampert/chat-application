@@ -1,0 +1,11 @@
+The go.mod file is the primary configuration file for a Go module. It declares the module's name, dependencies, and Go version.
+The go.sum file contains the checksums of the module dependencies listed in go.mod. These checksums ensure the integrity and authenticity of the downloaded modules.
+
+The Gorilla WebSocket package is commonly used in Go applications to handle WebSocket communication, especially in real-time applications like chat systems.
+
+http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {})
+http.HandleFunc("/"): Registers a handler function for the root path ("/"). When this path is requested, the provided anonymous function (func(w http.ResponseWriter, r *http.Request)) is executed.
+w http.ResponseWriter: Used to write the HTTP response back to the client.
+r *http.Request: Represents the incoming HTTP request.
+
+
