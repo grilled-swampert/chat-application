@@ -8,4 +8,20 @@ http.HandleFunc("/"): Registers a handler function for the root path ("/"). When
 w http.ResponseWriter: Used to write the HTTP response back to the client.
 r *http.Request: Represents the incoming HTTP request.
 
+Creating a WebSocket endpoint is about setting up a communication channel between a server and clients that stays open, unlike regular HTTP requests which are short-lived.
+How It Works:
+1. Define a new endpoint "/example":
+    This is a specific route that clients can connect to for WebSocket communication.
+2. Check request origin:
+    Before upgrading the connection, the server checks the origin (where the request is coming from). This is a security check to prevent unauthorized connections.
+    In this case, the check simply returns true, allowing all clients to connect.
+    When a browser connects to your server (like a WebSocket endpoint), it includes information about the origin in the request header. This is important for security because it helps prevent Cross-Origin Resource Sharing (CORS) issues and protects against unauthorized connections.
+3. Upgrade the Connection:
+    An upgrader is used to switch the connection from standard HTTP to WebSocket. This allows for persistent, real-time communication.
+4. Listen for Messages:
+    After upgrading, the server keeps the connection open and listens for incoming messages from the client.
+5. Echo Back Messages:
+    When the server receives a message, it prints it out (for logging/debugging) and sends the same message back to the client (echo).
+    This is a simple way to verify that the connection works properly.
+
 
