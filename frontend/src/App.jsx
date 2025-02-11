@@ -1,23 +1,28 @@
 // Import the React library and Component base class
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { connect, sendMsg } from '../api'; // Import WebSocket functions
 import './App.css'; // Import CSS styles
+import Header from './components/Header';
+import ChatHistory from './components/ChatHistory/chatHistory' // Ensure ChatHistory component is imported
 
 // Declare a class-based component by extending React's Component
 class App extends Component {
-  // Constructor is called when the component is created
   constructor(props) {
-    // Call the parent (Component) constructor to initialize the component
     super(props);
-
-    // Initialize WebSocket connection when the component is created
-    connect();
-
-    // Bind the `send` method to ensure `this` refers to the class instance
-    this.send = this.send.bind(this);
+    this.state = {
+      chatHistory: [],
+    };
   }
 
-  // Custom method to send a WebSocket message
+  componentDidMount() {
+    connect((msg) => {
+      console.log("New Message received:", msg);
+      this.setState((prevState) => ({
+        chatHistory: [...prevState.chatHistory, msg], // Proper state update
+      }));
+    });
+  }
+
   send() {
     console.log("Sending message: hello"); // Log message before sending
     sendMsg("hello"); // Use the imported WebSocket function to send a message
@@ -26,7 +31,9 @@ class App extends Component {
   // Render method defines the component's UI
   render() {
     return (
-      <div className='App'>
+      <div className="App">
+        <Header />
+        <ChatHistory chatHistory={this.state.chatHistory} />
         {/* Button with an event handler to call the `send` method */}
         <button onClick={this.send}>Hit</button>
       </div>

@@ -1,7 +1,7 @@
 // Create a new WebSocket instance and connect to the server at the specified endpoint
 var socket = new WebSocket('ws://localhost:8080/ws');
 
-let connect = () => {
+let connect = cb => {
     // Log an attempt to connect to the WebSocket server
     console.log("Attempting Connection...");
     
@@ -14,6 +14,7 @@ let connect = () => {
     socket.onmessage = msg => {
         // Log the received message
         console.log(msg);
+        cb(msg);
     }
 
     // Event triggered when the connection is closed
