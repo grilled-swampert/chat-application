@@ -1,9 +1,24 @@
-FROM golang:1.11.1-alpine3.8
-RUN apk add bash ca-certificates git gcc g++ libc-dev
-RUN mkdir /app 
-ADD . /app/ 
-WORKDIR /app 
+# Use the latest Golang Alpine base image
+FROM golang:1.21-alpine
+
+# Install required dependencies
+RUN apk add --no-cache bash ca-certificates git build-base
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy Go modules manifests and download dependencies first for caching optimization
+COPY go.mod go.sum ./
 RUN go mod download
-RUN go build -v
-RUN ls
-CMD ["/app/realtime-chat-go-react"]
+
+# Copy the rest of the application files
+COPY . .
+
+# Build the Go application
+RUN go build -o chat-application
+
+# List files (optional, for debugging)
+RUN ls -l
+
+# Command to run the application
+CMD ["/app/chat-application"]
