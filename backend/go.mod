@@ -1,4 +1,4 @@
-module github.com/grilled-swampert/chat-application.git
+module github.com/grilled-swampert/chat-application/backend
 
 go 1.23.6
 
