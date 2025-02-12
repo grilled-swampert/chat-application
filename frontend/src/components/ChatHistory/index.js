@@ -1,3 +1,3 @@
-import ChatHistory from "./chatHistory.jsx";
+import ChatHistory from './ChatHistory.jsx'
 
 export default ChatHistory;
