@@ -1,3 +1,5 @@
-module github.com/TutorialEdge/realtime-chat-go-react
+module github.com/grilled-swampert/chat-application.git
 
-require github.com/gorilla/websocket v1.4.0
+go 1.23.6
+
+require github.com/gorilla/websocket v1.5.3 // indirect
