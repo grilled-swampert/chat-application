@@ -4,7 +4,7 @@ class ChatHistory extends Component {
   render() {
     console.log(this.props.chatHistory);
     const messages = this.props.chatHistory.map((msg, index) => (
-      <p key={index}>{msg?.data || JSON.stringify(msg)}</p> // Handle undefined msg.data
+      <p key={index}>{msg?.data || JSON.stringify(msg)}</p> 
     ));
 
     return (
