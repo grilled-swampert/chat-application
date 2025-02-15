@@ -28,6 +28,8 @@ type Client struct {
 type Message struct {
 	Type int    `json:"type"`
 	Body string `json:"body"`
+	To  string `json:"to"`
+	From string `json:"from"`
 }
 
 // Read: Reads messages from the WebSocket client.
@@ -48,7 +50,11 @@ func (c *Client) Read() {
 		}
 		
 		// Create a new message with the message type and body.
-		message := Message{Type: messageType, Body: string(p)}
+		message := Message{
+			Type: messageType, 
+			Body: string(p), 
+			From: c.ID,
+		}
 		c.Pool.Broadcast <- message // Broadcast the message to all clients in the pool.
 		fmt.Printf("Message Received: %+v\n", message) // Print the received message to the console.
 	}

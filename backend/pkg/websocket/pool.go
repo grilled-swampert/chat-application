@@ -34,24 +34,22 @@ func (pool *Pool) Start() {
 		case client := <-pool.Register: // If a client is registered with the pool, add the client to the pool.
 			pool.Clients[client] = true // Add the client to the pool.
 			fmt.Println("Size of Connection Pool: ", len(pool.Clients)) // Print the size of the connection pool to the console.
-			for client, _ := range pool.Clients { // Iterate over all clients in the pool.
-				fmt.Println(client) // Print the client to the console.
-				client.Conn.WriteJSON(Message{Type: 1, Body: "New User Joined..."}) // Send a message to the client.
-			} 
-			break // Exit the loop.
+			fmt.Println("New user joined: ", client.ID)
 		case client := <-pool.Unregister: // If a client is unregistered from the pool, remove the client from the pool.
 			delete(pool.Clients, client) // Remove the client from the pool.
 			fmt.Println("Size of Connection Pool: ", len(pool.Clients)) // Print the size of the connection pool to the console.
-			for client, _ := range pool.Clients { // Iterate over all clients in the pool.	
-				client.Conn.WriteJSON(Message{Type: 1, Body: "User Disconnected..."}) // Send a message to the client.
-			}
-			break
+			fmt.Println("User disconnected:", client.ID)
 		case message := <-pool.Broadcast: // If a message is broadcast to the pool, send the message to all clients in the pool.
-			fmt.Println("Sending message to all clients in Pool") // Print a message to the console.
-			for client, _ := range pool.Clients { // Iterate over all clients in the pool.
-				if err := client.Conn.WriteJSON(message); err != nil { // If an error occurs while sending the message, print the error message to the console.
-					fmt.Println(err)
-					return
+			if message.To == "" { // If no specific recipient, broadcast
+				for client := range pool.Clients {
+					client.Conn.WriteJSON(message)
+				}
+			} else { // Private message to specific user
+				for client := range pool.Clients {
+					if client.ID == message.To {
+						client.Conn.WriteJSON(message)
+						break
+					}
 				}
 			}
 		}

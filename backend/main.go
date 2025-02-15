@@ -14,12 +14,13 @@ import (
 // serveWs: Upgrades the HTTP server connection to a WebSocket connection.
 func serveWs(pool *websocket.Pool, w http.ResponseWriter, r *http.Request) { // The serveWs function takes a WebSocket pool, an HTTP response writer, and an HTTP request as arguments.
 	fmt.Println("WebSocket Endpoint Hit") // Print a message to the console when a WebSocket connection is established.
-	conn, err := websocket.Upgrade(w, r) // Upgrade the HTTP server connection to a WebSocket connection.
+	conn, userId, err := websocket.Upgrade(w, r) // Upgrade the HTTP server connection to a WebSocket connection.
 	if err != nil { 					// If an error occurs, print the error message to the console.
 		fmt.Fprintf(w, "%+v\n", err)
 	}
 
 	client := &websocket.Client{ // Create a new WebSocket client.
+		ID: userId, // Set the ID of the WebSocket client to the user ID.
 		Conn: conn, // Set the connection to the WebSocket connection.
 		Pool: pool, // Set the pool to the WebSocket pool.
 	}
